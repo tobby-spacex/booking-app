@@ -4,10 +4,12 @@ declare(strict_types = 1);
 
 namespace App\Controllers;
 
+use App\View;
+
 class BaseController
 {
-    public function index()
+    public function index(): View
     {
-        echo 'BaseController';
+       return View::make('index', ['dataforview' => 'some data']);
     }
 }
