@@ -12,12 +12,15 @@ $dotenv = Dotenv\Dotenv::createImmutable(dirname(__DIR__));
 $dotenv->load();
 
 define('VIEW_PATH', __DIR__ . '/../resources/views');
+define('VIEW_PARTIALS_PATH', __DIR__ . '/../resources/views/partials');
+
 
 $router = new Router();
 
 $router
     ->get('/', [BaseController::class, 'index'])
     ->get('/rooms/room1', [RoomsController::class, 'room'])
+    ->post('/rooms/room1', [RoomsController::class, 'booking'])
     ;
 
 echo $router->resolve(
