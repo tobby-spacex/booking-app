@@ -2,22 +2,35 @@
 
 namespace App\Model;
 
-use App\Database;
 use App\Model;
 
 class Booking extends Model
 {
-    public function create()
+    public function create(array $bookingData)
     {
-        $name = 'Maks';
-        $email = 'maks@gmail.com';
-        $phone = '78945';
-        $time = '11:30';
 
-        $query = 'INSERT into room_one (name, email, phone, time)
-                  VALUES (?, ?, ?, ?)';
-        
-        $stmt = $this->pdo->prepare($query);
-        $stmt->execute([$name, $email, $phone, $time]);
+        foreach ($bookingData as $key => $value) {
+            $$key = $bookingData[$key];
+        }
+
+        try {
+            $query = 'INSERT into room_one (name, email, phone, time)
+            VALUES (:name, :email, :phone, :time)';
+  
+            $stmt = $this->pdo->prepare($query);
+
+            $stmt->bindParam(':name',  $name);
+            $stmt->bindParam(':email', $email);
+            $stmt->bindParam(':phone', $phone);
+            $stmt->bindParam(':time',  $time);
+            $stmt->execute();
+            
+        } catch (\PDOException $e) {
+            if ($e->errorInfo[1] == 1062) {
+                echo 'duplicate error ' . 'the time ' . $time . ' already booked';
+             } else {
+                echo 'error';
+             }
+        }
     }
 }

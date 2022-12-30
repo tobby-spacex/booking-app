@@ -10,20 +10,46 @@ $interval = new DateInterval('PT30M');
 
 $dateRange = new DatePeriod($start, $interval, $end);
 
+if (isset($_SESSION['error'])) {
+    foreach ($_SESSION as $errors) {
+        foreach ($errors as $key => $value) {
+            $$key = $errors[$key];
+        }
+    }
+}
+
 ?>
 
 <?php include VIEW_PARTIALS_PATH . '/_header.php'; ?>
 
+<?php 
+    if (isset($_SESSION['success'])) {
+        echo $_SESSION['success'];
+    }
+?>
+
 <form action="/rooms/room1" method="post" class="mx-auto w-3/12">
     <div class="room-card grid bg-amber-100">
-        <label>Name:</label>
-        <input name="name" required/>
 
+        <input type="hidden" name="url" value="<?=$_SERVER['REQUEST_URI']?>" />
+
+        <label>Name:</label>
+        <input name="name" placeholder="name"/>
+        <div class="error" style="color: red;">
+         <?php if(isset($name)) { echo $name[0]; }?>
+        </div>
+        
         <label>Email:</label>
-        <input name="email" required/>
+        <input name="email" placeholder="email"/>
+        <div class="error" style="color: red;">
+        <?php if(isset($email)) { echo $email[0]; }?>
+        </div>
 
         <label>Phone:</label>
-        <input name="phone" required/>
+        <input name="phone" placeholder="phone"/>
+        <div class="error" style="color: red;">
+        <?php if(isset($phone)) { echo $phone[0]; }?>
+        </div>
 
         <select name="time" id="time">
         <?php foreach($dateRange as $date): ?>
@@ -37,4 +63,7 @@ $dateRange = new DatePeriod($start, $interval, $end);
     </div>
 </form>
 
+<?php
+    session_unset();
+?>
 <?php include VIEW_PARTIALS_PATH . '/_footer.php'; ?>
