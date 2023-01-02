@@ -11,11 +11,11 @@ $interval = new DateInterval('PT30M');
 $dateRange = new DatePeriod($start, $interval, $end);
 
 if (isset($_SESSION['error'])) {
-    foreach ($_SESSION as $errors) {
-        foreach ($errors as $key => $value) {
-            $$key = $errors[$key];
+    // foreach ($_SESSION['error'] as $errors) {
+        foreach ($_SESSION['error'] as $key => $value) {
+            $$key = $_SESSION['error'][$key];
         }
-    }
+    // }
 }
 
 ?>
@@ -25,6 +25,13 @@ if (isset($_SESSION['error'])) {
 <?php 
     if (isset($_SESSION['success'])) {
         echo $_SESSION['success'];
+    }
+
+    if (isset($_SESSION['booked_person'])) {
+        $bookedName = $_SESSION['booked_person']['name'];
+        $bookedEmail = $_SESSION['booked_person']['email'];
+
+        echo 'This time already booked by ' . ucfirst($bookedName) . '. His/Her contact email is ' . $bookedEmail;
     }
 ?>
 

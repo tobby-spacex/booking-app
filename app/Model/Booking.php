@@ -33,4 +33,15 @@ class Booking extends Model
              }
         }
     }
+
+    public function isBooked(string $requestedTime)
+    {
+        $param =  '%' . $requestedTime . '%';
+
+        $query = "SELECT * FROM room_one WHERE time LIKE ?";
+        $stmt = $this->pdo->prepare($query);
+        $stmt->execute(array($param));
+
+        return $stmt->fetch(\PDO::FETCH_ASSOC);
+    }
 }
