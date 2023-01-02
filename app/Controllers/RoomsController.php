@@ -3,8 +3,10 @@
 namespace App\Controllers;
 
 use App\View;
+use App\AutoMailer;
 use App\Model\Booking;
 use Valitron\Validator;
+use Symfony\Component\Mime\Email;
 
 session_start();
 
@@ -50,7 +52,15 @@ class RoomsController
 
         if($v->validate()) {
             $_SESSION['success'] =  "Yay! We're all good!";
-            $this->bookingModel->create($bookingData);
+
+            $email = (new Email())
+            ->from('arman@example.com')
+            ->to($bookingData['email'])
+            ->subject('Office booked!')
+            ->text('Hi, you have booked office. Reserved time is ' . $bookingData['time'])
+            ->html('<p>Please share our service with your friends.</p>');
+            AutoMailer::mailSend($email);
+
         } else {
             $_SESSION['error'] = $v->errors();
             $_SESSION['booked_person'] = isset($this->bookedTime) ? $this->bookedTime : null;

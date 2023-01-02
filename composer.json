@@ -12,6 +12,7 @@
     ],
     "require": {
         "vlucas/phpdotenv": "^5.5",
-        "vlucas/valitron": "^1.4"
+        "vlucas/valitron": "^1.4",
+        "symfony/mailer": "^6.0"
     }
 }
